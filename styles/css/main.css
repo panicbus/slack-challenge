@@ -1,0 +1,14 @@
+.main-container {
+  text-align: center;
+  font-family: helvetica;
+  font-size: 25px;
+  padding-top: 75px; }
+
+.thumbnail {
+  width: 150px;
+  height: 150px;
+  border: 2px solid black;
+  display: inline-block;
+  margin-bottom: 10px; }
+  .thumbnail + .thumbnail {
+    margin-left: 15px; }

@@ -21,10 +21,12 @@
 			// add the data to a var
 			var photo = response.photoset.photo;
 
+			// var photoUrl_l = 'https://farm' + photo[i].farm + '.staticflickr.com/' + photo[i].server + '/' + photo[i].id + '_' + photo[i].secret + '_z.jpg';
+
 			// loop thru the response data
 			for (var i = 0; i < photo.length; i++){
 				// $('container').innerHTML = "";
-				var photoUrl = 'https://farm' + photo[i].farm + '.staticflickr.com/' + photo[i].server + '/' + photo[i].id + '_' + photo[i].secret + '_q.jpg';
+				var photoUrl = 'https://farm' + photo[i].farm + '.staticflickr.com/' + photo[i].server + '/' + photo[i].id + '_' + photo[i].secret + '_z.jpg';
 
 				// create containers for pics
 				var div = document.createElement('div');
@@ -54,15 +56,23 @@
 		// grab the dom object
 		var clickedLightBoxThumb = photo;
 
+		var lbImageUrl = photo.children[0].src;
+		// var lbImage = '<img id="lightBoxImage" src="' + lbImageUrl + '"/>'
+
 		// define the locations
 		var lightBoxPic = document.getElementById('lightBoxPic');
+
+		// replace string with html
+		lightBoxPic.innerHTML = '<img id="lightBoxImage" src="' + lbImageUrl + '"/>';
 		var lightBoxBackground = document.getElementById('lightBoxBackground');
 
+		// set childnodes and replace if node exists otherwise append
+		// keeps dom from adding multiple lightboxes
 		var lbChildren = lightBoxPic.childNodes;
 		if (lbChildren[0]) {
-		  lightBoxPic.replaceChild(photo, lbChildren[0]);
+		  lightBoxPic.replaceChild(lbChildren[0], lbChildren[0]);
 		} else {
-		  lightBoxPic.appendChild(photo);
+		  lightBoxPic.appendChild(lbChildren[0]);
 		}
 
 		// show the pic and apply the background

@@ -1,12 +1,39 @@
+// transition x-browser
+@mixin transition($property: all, $duration: .4s, $easing: ease-in-out)
+	-webkit-transition: $property, $duration, $easing
+	-moz-transition: $property, $duration, $easing
+	-ms-transition: $property, $duration, $easing
+	-o-transition: $property, $duration, $easing
+	transition: $property, $duration, $easing
+
+// border-radius x-browser
+@mixin rounded($radius: 0.3em)
+	-webkit-border-radius: $radius
+	-moz-border-radius: $radius
+	border-radius: $radius
+
+html, body
+	padding: 0
+	margin: 0
+	width: 100%
+	height: 100%
+
 .container
 	text-align: center
 	font-family: helvetica
 	font-size: 25px
-	padding-top: 75px
+	padding: 20px
+	position: relative
+
+header
+	padding-top: 55px
+
+// .form-search
+// 	padding-bottom: 15px
 
 .thumbnail
-	max-width: 150px
-	max-height: 150px
+	width: 150px
+	height: 150px
 	display: inline-block
 	margin-bottom: 10px
 	&+.thumbnail
@@ -14,8 +41,9 @@
 	img
 		width: 150px
 		height: 150px
-		border: 2px solid #000
+		border: 2px solid #666
 		object-fit: cover
+		@include rounded()
 
 
 // lightbox
@@ -23,19 +51,22 @@
 	position: absolute
 	top: 0px
 	left: 0px
-	height: 100%
+	height: 100vh
 	width: 100%
-	background: rgba(0,0,0,0.5)
+	background: rgba(0,0,0,0.7)
 	display: none
+	// @include transition()
 
 #lightBoxPic
+	width: 63%
 	position: absolute
-	top: 25%
-	width: 100%
-	display: none
-
-#lightBoxImage
-	margin: 0 auto
-	display: block
-	width: 500px
-	height: auto
+	margin: auto
+	top: 50px
+	bottom: 0
+	left: 0
+	right: 0
+	display: table
+	// @include transition()
+	img
+		max-height: 90vh
+		// @include transition()

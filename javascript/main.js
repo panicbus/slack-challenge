@@ -76,7 +76,7 @@
 		}
 
 		// show the pic and apply the background
-		lightBoxPic.style.display = 'block';
+		lightBoxPic.style.display = 'table'; // display:table keeps the pic aspect ratio w/in sviewport
 		lightBoxBackground.style.display = 'block';
 
 	}

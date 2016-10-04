@@ -11,34 +11,28 @@
 
 	xhr.onreadystatechange = processRequest;
 
-	$ = document.getElementById.bind(document);
 
 	// hit the flickr api
-  function processRequest(e) {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      var response = JSON.parse(xhr.responseText);
+	function processRequest(e) {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			var response = JSON.parse(xhr.responseText);
 
 			// add the data to a var
 			var photo = response.photoset.photo;
-
-			// var photoUrl_l = 'https://farm' + photo[i].farm + '.staticflickr.com/' + photo[i].server + '/' + photo[i].id + '_' + photo[i].secret + '_z.jpg';
 
 			// loop thru the response data
 			for (var i = 0; i < photo.length; i++){
 				// $('container').innerHTML = "";
 				var photoUrl = 'https://farm' + photo[i].farm + '.staticflickr.com/' + photo[i].server + '/' + photo[i].id + '_' + photo[i].secret + '_z.jpg';
 
-				// create containers for pics
+				// create containers for thumbs
 				var div = document.createElement('div');
 
 				// add class
 				div.className = 'thumbnail';
 
-				// add photo to thumb list
+				// add photo to thumb container
 				div.innerHTML = '<img id="lightBoxThumb" src="' + photoUrl + '"/>';
-
-				// set index attrs to thumb & lb list
-				div.setAttribute('data-index', i+1);
 
 				// append thumbs to dom thumbnail area
 				document.getElementById('thumbnailList').appendChild(div);
@@ -47,45 +41,96 @@
 				div.onclick = function(){
 					launchLightBox(this);
 				}
-
 			}
-    }
+
+		}
+
+		//// FLIPPER ////
+		$ = document.getElementById.bind(document);
+		var counter = 0, // keep track of current slide
+				$items = document.querySelectorAll('.thumbnail-list .thumbnail'),
+				numItems = $items.length;
+
+		// this function is what cycles the slides, showing the next or previous slide and hiding all the others
+		var showCurrent = function(){
+			var itemToShow = Math.abs(counter%numItems);// uses remainder (aka modulo) operator to get the index of the element to show
+
+
+			// remove show from whichever element currently has it
+			// http://stackoverflow.com/a/16053538/2006057
+			[].forEach.call( $items, function(el){
+				el.classList.remove('show');
+			});
+
+			// add show class to correct item
+			$items[itemToShow].classList.add('show');
+		};
+
+		// add click events for flipper buttons
+		document.querySelector('.next').addEventListener('click', function() {
+			counter++;
+			showCurrent();
+		}, false);
+
+		document.querySelector('.prev').addEventListener('click', function() {
+			counter--;
+			showCurrent();
+		}, false);
+		// END FLIPPER //
+
+
 	}
 
 	function launchLightBox(photo){
 		// grab the dom object
 		var clickedLightBoxThumb = photo;
 
-		var lbImageUrl = photo.children[0].src;
-		// var lbImage = '<img id="lightBoxImage" src="' + lbImageUrl + '"/>'
+		clickedLightBoxThumb.classList.add('show');
 
-		// define the locations
+		// define the container where the image goes
 		var lightBoxPic = document.getElementById('lightBoxPic');
 
-		// replace string with html
-		lightBoxPic.innerHTML = '<img id="lightBoxImage" src="' + lbImageUrl + '"/>';
-		var lightBoxBackground = document.getElementById('lightBoxBackground');
+		var thumbnails = document.getElementsByClassName('thumbnail');
+		for (var i = 0; i < thumbnails.length; i++){
+			var thumb = thumbnails[i];
+			if (thumb.classList.contains('show') ) {
+				var thumbUrl = thumb.children[0].src;
+				lightBoxPic.innerHTML = '<img id="lightBoxImage" src="' + thumbUrl + '"/>'
 
-		// set childnodes and replace if node exists otherwise append
-		// keeps dom from adding multiple lightboxes
-		var lbChildren = lightBoxPic.childNodes;
-		if (lbChildren[0]) {
-		  lightBoxPic.replaceChild(lbChildren[0], lbChildren[0]);
-		} else {
-		  lightBoxPic.appendChild(lbChildren[0]);
+			}
 		}
 
-		// show the pic and apply the background
-		lightBoxPic.style.display = 'table'; // display:table keeps the pic aspect ratio w/in sviewport
+		// add active class to display the pic container
+		lightBoxPic.classList.add('active');
+
+		var lightBoxBackground = document.getElementById('lightBoxBackground');
+
 		lightBoxBackground.style.display = 'block';
+
+		//show the flippers
+		var prev = document.getElementById('prev'),
+				next = document.getElementById('next');
+		prev.style.display = 'block';
+		next.style.display = 'block';
 
 	}
 
 })();
 
 function dismiss(){
-	// var lightBoxBackground = document.getElementById('lightBoxBackground');
-	// var lightBoxPic = document.getElementById('lightBoxPic');
+	var thumbnails = document.getElementsByClassName('thumbnail');
+	for (var i = 0; i < thumbnails.length; i++){
+		var thumb = thumbnails[i];
+		// remove the show class from all
+		thumb.className = thumb.className.replace(/\bshow\b/,'');
+	}
+
 	lightBoxBackground.style.display = 'none';
-	lightBoxPic.style.display = 'none';
+	lightBoxPic.classList.remove('active');
+
+	// hide the flippers
+	prev.style.display = 'none';
+	next.style.display = 'none';
 }
+
+

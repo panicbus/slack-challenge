@@ -7,23 +7,20 @@
 </head>
 <body>
 	<div class="container">
-		<div id="lightBoxBackground" onclick="dismiss()"></div>
+
+		<div id="lightBoxBackground" onclick="dismiss()">
+		</div>
+
+		<span id="prev" class="prev">&laquo;</span>
+		<span id="next" class="next">&raquo;</span>
+
 		<header>
-		   <h1>Flickr gallery</h1>
+			 <h1>Flickr gallery</h1>
 		</header>
 
-		<!-- <form class="js-form-search form-search" action="/search" method="get" role="search">
-			<label for="query">Search:</label>
-			<input type="search" name="query" id="query" placeholder="Search" required />
-			<input type="submit" value="Search" />
-		</form> -->
 
-		<!-- <div class="gallery-image">
-			<div class="prev-btn"></div>
-			<div class="next-btn"></div>
-		</div> -->
-		<div id="lightBoxPic"></div>
-		<div id="thumbnailList"></div>
+		<div id="lightBoxPic" class="lightbox-pic"></div>
+		<div id="thumbnailList" class="thumbnail-list"></div>
 	</div>
 
 	<script type='text/javascript' src="javascript/main.js"></script>

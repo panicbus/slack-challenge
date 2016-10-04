@@ -39,7 +39,8 @@
 
 				// launch lightbox
 				div.onclick = function(){
-					launchLightBox(this);
+					showCurrent(this);
+					launchLightBox();
 				}
 			}
 
@@ -52,7 +53,7 @@
 				numItems = $items.length;
 
 		// this function is what cycles the slides, showing the next or previous slide and hiding all the others
-		var showCurrent = function(){
+		function showCurrent(photo) {
 			var itemToShow = Math.abs(counter%numItems);// uses remainder (aka modulo) operator to get the index of the element to show
 
 
@@ -64,6 +65,29 @@
 
 			// add show class to correct item
 			$items[itemToShow].classList.add('show');
+
+				// grab the dom object
+			var clickedLightBoxThumb = photo;
+
+			// add show class
+			clickedLightBoxThumb.classList.add('show');
+
+			// define the container where the image goes
+			var lightBoxPic = document.getElementById('lightBoxPic');
+
+			var thumbnails = document.getElementsByClassName('thumbnail');
+			for (var i = 0; i < thumbnails.length; i++){
+				var thumb = thumbnails[i];
+				// find out which ones have show class
+				if (thumb.classList.contains('show') ) {
+					var thumbUrl = thumb.children[0].src;
+					// add to dom container
+					lightBoxPic.innerHTML = '<img id="lightBoxImage" src="' + thumbUrl + '"/>'
+
+				}
+			}
+
+
 		};
 
 		// add click events for flipper buttons
@@ -82,23 +106,6 @@
 	}
 
 	function launchLightBox(photo){
-		// grab the dom object
-		var clickedLightBoxThumb = photo;
-
-		clickedLightBoxThumb.classList.add('show');
-
-		// define the container where the image goes
-		var lightBoxPic = document.getElementById('lightBoxPic');
-
-		var thumbnails = document.getElementsByClassName('thumbnail');
-		for (var i = 0; i < thumbnails.length; i++){
-			var thumb = thumbnails[i];
-			if (thumb.classList.contains('show') ) {
-				var thumbUrl = thumb.children[0].src;
-				lightBoxPic.innerHTML = '<img id="lightBoxImage" src="' + thumbUrl + '"/>'
-
-			}
-		}
 
 		// add active class to display the pic container
 		lightBoxPic.classList.add('active');

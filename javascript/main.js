@@ -43,19 +43,17 @@
 					launchLightBox();
 				}
 			}
-
 		}
 
-		//// FLIPPER ////
-		$ = document.getElementById.bind(document);
-		var counter = 0, // keep track of current slide
-				$items = document.querySelectorAll('.thumbnail-list .thumbnail'),
-				numItems = $items.length;
+		var counter = 0; // current slide counter
 
-		// this function is what cycles the slides, showing the next or previous slide and hiding all the others
 		function showCurrent(photo) {
-			var itemToShow = Math.abs(counter%numItems);// uses remainder (aka modulo) operator to get the index of the element to show
+			var	$items = document.querySelectorAll('.thumbnail-list .thumbnail'),
+					numItems = $items.length;
 
+			// uses modulo and .abs to get the positive integer index of the thumbnail to show
+			// remainder of counter / items.length will always == the correct counter index
+			var itemToShow = Math.abs(counter%numItems);
 
 			// remove show from whichever element currently has it
 			// http://stackoverflow.com/a/16053538/2006057
@@ -63,14 +61,13 @@
 				el.classList.remove('show');
 			});
 
-			// add show class to correct item
-			$items[itemToShow].classList.add('show');
-
-				// grab the dom object
-			var clickedLightBoxThumb = photo;
-
-			// add show class
-			clickedLightBoxThumb.classList.add('show');
+			// add show class to index item if it doesn't exist
+			if (!$items[itemToShow].classList.contains('show')) {
+				$items[itemToShow].classList.add('show');
+			} else if (!$items[itemToShow].classList.contains('show') && !photo.classList.contains('show')) {
+	 			// otherwise add show class to clicked thumb
+				photo.classList.add('show');
+			}
 
 			// define the container where the image goes
 			var lightBoxPic = document.getElementById('lightBoxPic');
@@ -86,28 +83,24 @@
 
 				}
 			}
-
-
 		};
 
-		// add click events for flipper buttons
+		// add click events to flipper buttons
 		document.querySelector('.next').addEventListener('click', function() {
 			counter++;
 			showCurrent();
-		}, false);
+		});
 
 		document.querySelector('.prev').addEventListener('click', function() {
 			counter--;
 			showCurrent();
-		}, false);
-		// END FLIPPER //
-
+		});
 
 	}
 
 	function launchLightBox(photo){
 
-		// add active class to display the pic container
+		// add active class to display the lightbox pic container
 		lightBoxPic.classList.add('active');
 
 		var lightBoxBackground = document.getElementById('lightBoxBackground');
@@ -132,6 +125,7 @@ function dismiss(){
 		thumb.className = thumb.className.replace(/\bshow\b/,'');
 	}
 
+	// hide the background and lightbox pic container
 	lightBoxBackground.style.display = 'none';
 	lightBoxPic.classList.remove('active');
 
